@@ -1,18 +1,24 @@
 url,label
-http://site.com?q=<body onload=alert('xss')>,1
-http://example.com/home,0
-http://site.com/auth?user=' OR 1=1 --,1
-https://profile.social.com/view?user=john_doe,0
-http://example.com/search?q=test'%20OR%20'1'%20=%20'1,1
-https://shopping.com/products?category=books,0
-http://newsportal.com/article?id=4523,0
-http://shop.com/?input=%3Cscript%3Ealert('x')%3C%2Fscript%3E,1
-http://docs.site.com/download?file=report.pdf,0
-http://weatherinfo.com/today?location=delhi,0
-http://victim.com/search?q=<script>alert('XSS')</script>,1
-http://example.com/items?id=10 OR 1=1,1
-http://page.com/?value=%22%3E%3Cscript%3Ealert(1)%3C/script%3E,1
-http://comments.com/post?id=5&comment=<img src=x onerror=alert('x')>,1
-http://bank.com/transfer?amount=1000&to=1234; DROP TABLE users;,1
-http://example.com/login?username=admin'--&password=,1
-https://edu-site.org/login?user=student&pass=1234,0
+http://site.com?q=<body onload=alert('xss')>,xss
+http://example.com/home,benign
+http://site.com/auth?user=' OR 1=1 --,sql_injection
+https://profile.social.com/view?user=john_doe,benign
+http://example.com/search?q=test'%20OR%20'1'%20=%20'1,sql_injection
+https://shopping.com/products?category=books,benign
+http://newsportal.com/article?id=4523,benign
+http://shop.com/?input=%3Cscript%3Ealert('x')%3C%2Fscript%3E,xss
+http://docs.site.com/download?file=report.pdf,benign
+http://weatherinfo.com/today?location=delhi,benign
+http://victim.com/search?q=<script>alert('XSS')</script>,xss
+http://example.com/items?id=10 OR 1=1,sql_injection
+http://page.com/?value=%22%3E%3Cscript%3Ealert(1)%3C/script%3E,xss
+http://comments.com/post?id=5&comment=<img src=x onerror=alert('x')>,xss
+http://bank.com/transfer?amount=1000&to=1234; DROP TABLE users;,sql_injection
+http://example.com/login?username=admin'--&password=,sql_injection
+https://edu-site.org/login?user=student&pass=1234,benign
+http://example.com/products?id=5,benign
+http://example.com/page.php?id=1 OR 1=1,sql_injection
+https://mysite.com/search?q=hello<script>alert(1)</script>,xss
+https://secure.example.com/login,benign
+https://test.com/?input=' OR '1'='1,sql_injection
+http://evil.com/?img=<img src=x onerror=alert('XSS')>,xss
