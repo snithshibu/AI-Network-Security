@@ -1,38 +1,46 @@
 # 🛡️ AI-Powered Network Security System
 
-This project is a submission for the **Intel® Unnati Internship Project** under the theme **AI/ML for Networking - Network Security**.  
-It includes two core machine learning components:
+This project is submitted as part of the **Intel® Unnati Internship Program 2025** under the theme  
+**AI/ML for Networking – Network Security**.
 
-1. 🚨 **Threat Detection**: Detects SQL Injection (SQLi) and Cross-Site Scripting (XSS) in URLs
-2. 🚦 **Traffic Classification**: Classifies network flows into app types like HTTP, SSL, GOOGLE, etc.
+It integrates two machine learning components into a modern web application to enhance automated network defense:
 
-Both systems are integrated into a modern **Streamlit web dashboard** for real-time and batch analysis.
+1. 🚨 **Threat Detection**  
+   Detects and classifies potentially malicious URLs into types: `SQL Injection`, `XSS`, or `Benign`.
+
+2. 🚦 **Traffic Classification**  
+   Classifies network traffic flows into application types like HTTP, SSL, GOOGLE, etc., using flow-level metadata.
+
+Both systems are unified within a clean, interactive **Streamlit dashboard** that supports real-time and batch analysis.
 
 ---
 
 ## 🎯 Project Deliverables
 
-| Deliverable | Status |
-|------------|--------|
-| ✅ Threat Detection using AI (SQLi/XSS) | ✔️ Implemented via Random Forest |
-| ✅ Traffic Classification (App ID detection) | ✔️ Implemented via ML on flow metadata |
-| ✅ Real-time + Batch Mode | ✔️ Streamlit UI with CSV upload support |
-| ✅ Privacy-preserving analysis | ✔️ Only uses metadata, not decrypted payloads |
-| ✅ Downloadable results | ✔️ Predictions can be exported as CSV |
-| ✅ Modular and Scalable | ✔️ Models are decoupled and retrainable |
+| Deliverable | Description | Status |
+|-------------|-------------|--------|
+| ✅ AI-Powered Threat Detection | Detect and classify SQLi/XSS from URLs | ✔️ Multi-class model trained |
+| ✅ Traffic Classification Model | App ID detection from flow-level metadata | ✔️ Implemented via Random Forest |
+| ✅ Real-Time + Batch Support | Accepts both single inputs and CSV uploads | ✔️ Supported in Streamlit UI |
+| ✅ Privacy-Preserving Analysis | No decryption or DPI; metadata-based | ✔️ Fully compliant |
+| ✅ Downloadable Results | Predictions can be exported to CSV | ✔️ Enabled |
+| ✅ Modular & Scalable Design | Models are decoupled and retrainable | ✔️ Structured for future extensions |
 
 ---
 
-## 🧩 Features
+## 🧩 Key Features
 
-### 🔍 Threat Detection
-- Accepts a single URL or CSV of URLs
-- Extracts features like entropy, token histograms, suspicious patterns
-- Predicts: `Malicious` or `Benign`
+### 🔍 Threat Detection (Multi-Class)
+- Input: Single URL or CSV of URLs
+- Output Classes:
+  - ⚠️ `SQL_INJECTION`
+  - ⚠️ `XSS`
+  - ✅ `Benign`
+- Feature engineering includes length, entropy, tokens, symbols, and special patterns
 
 ### 🚦 Traffic Classification
-- Accepts CSVs of network flow data with 87 metadata features
-- Classifies traffic into app types (HTTP, SSL, GOOGLE, etc.)
+- Input: CSV with 87 flow-based metadata features
+- Output Classes: HTTP, SSL, GOOGLE, etc.
 - Scalable to more classes with retraining
 
 ---
@@ -40,11 +48,11 @@ Both systems are integrated into a modern **Streamlit web dashboard** for real-t
 ## 🛠️ Tech Stack
 
 - **Python 3.12**
-- **Streamlit** – Frontend dashboard
-- **scikit-learn** – Machine Learning models
-- **joblib** – Model persistence
+- **Streamlit** – Web dashboard
+- **scikit-learn** – Machine learning models
 - **pandas**, **numpy** – Data handling
-- **StandardScaler**, **LabelEncoder** – Preprocessing
+- **joblib** – Model serialization
+- **StandardScaler**, **LabelEncoder** – Preprocessing tools
 
 ---
 
@@ -76,8 +84,10 @@ AI-Network-security/ <br>
 
 bash
 ### Step 1: Create virtual environment
-python -m venv env
-env\Scripts\activate      # or source env/bin/activate (Linux/macOS)
+python -m venv env <br>
+env\Scripts\activate        # On Windows <br>
+#### OR <br>
+source env/bin/activate     # On Linux/macOS
 
 ### Step 2: Install dependencies
 pip install -r requirements.txt
@@ -89,13 +99,22 @@ streamlit run app.py
 
 ## 📈 Sample Outputs
 
-| Input Type | Output
-|------------|--------|
-http://example.com?query=<script>alert(1)</script> |	⚠️ Malicious
-Flow with ProtocolName: SSL, 87 metadata fields |	✅ SSL
+| URL                                          | Prediction                    |
+| -------------------------------------------- | ----------------------------- |
+| `http://abc.com?q=<script>alert(1)</script>` | ⚠️ Malicious — XSS            |
+| `http://example.com?id=1 OR 1=1`             | ⚠️ Malicious — SQL\_INJECTION |
+| `https://shop.com/product?item=123`          | ✅ Benign                      |
+
+| Traffic Flow Metadata           | Prediction |
+| ------------------------------- | ---------- |
+| Flow with SSL protocol features | ✅ SSL      |
+| Flow with GOOGLE app pattern    | ✅ GOOGLE   |
+
 
 ---
 
 👨‍💻 Developed By <br>
-Snith Shibu, Sidharth Sumitra Gireesh, Devananda S.R. <br>
+Snith Shibu <br>
+Sidharth Sumitra Gireesh <br>
+Devananda S.R. <br>
 Intel® Unnati Internship 2025 <br>
