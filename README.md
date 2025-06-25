@@ -70,18 +70,22 @@ AI-Network-security/ <br>
 │ ├── traffic_classification.ipynb<br>
 │ └── explore_traffic_data.ipynb<br>
 
+---
+
 ## ▶️ How to Run
 
-```bash
-# Step 1: Create virtual environment
+bash
+### Step 1: Create virtual environment
 python -m venv env
 env\Scripts\activate      # or source env/bin/activate (Linux/macOS)
 
-# Step 2: Install dependencies
+### Step 2: Install dependencies
 pip install -r requirements.txt
 
-# Step 3: Launch the app
+### Step 3: Launch the app
 streamlit run app.py
+
+---
 
 ## 📈 Sample Outputs
 
@@ -90,6 +94,8 @@ streamlit run app.py
 http://example.com?query=<script>alert(1)</script> |	⚠️ Malicious
 Flow with ProtocolName: SSL, 87 metadata fields |	✅ SSL
 
-👨‍💻 Developed By
-Snith Shibu, Sidharth Sumitra Gireesh, Devananda S.R.
-Intel® Unnati Internship 2025
+---
+
+👨‍💻 Developed By <br>
+Snith Shibu, Sidharth Sumitra Gireesh, Devananda S.R. <br>
+Intel® Unnati Internship 2025 <br>
