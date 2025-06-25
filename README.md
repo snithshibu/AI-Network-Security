@@ -66,7 +66,7 @@ AI-Network-security/ <br>
 ├── utils/<br>
 │ └── feature_extraction.py # Custom URL feature logic<br>
 │<br>
-├── notebooks/ # (Optional) Jupyter notebooks for training<br>
+├── notebooks/ # Jupyter notebooks for training<br>
 │ ├── traffic_classification.ipynb<br>
 │ └── explore_traffic_data.ipynb<br>
 
