@@ -6,9 +6,10 @@ from utils.feature_extraction import extract_features
 
 # Load models
 threat_model = joblib.load("model/rf_model.pkl")
-traffic_model = joblib.load("model/traffic_classifier.pkl")
-traffic_scaler = joblib.load("model/traffic_scaler.pkl")
-traffic_label_encoder = joblib.load("model/traffic_label_encoder.pkl")
+traffic_model = joblib.load("../model/traffic_classifier.pkl")
+traffic_scaler = joblib.load("../model/traffic_scaler.pkl")
+traffic_label_encoder = joblib.load("../model/traffic_label_encoder.pkl")
+threat_label_encoder = joblib.load("../model/rf_label_encoder.pkl")
 
 # App layout
 st.set_page_config(page_title="AI Network Security", layout="wide")
@@ -18,30 +19,34 @@ tabs = st.tabs(["🚨 Threat Detection", "🚦 Traffic Classification"])
 
 # ==================== THREAT DETECTION TAB ==================== #
 with tabs[0]:
-    st.header("Detect SQLi / XSS in URLs")
+    st.header("Detect SQL Injection / XSS Attacks")
 
-    url_input = st.text_input("🔗 Enter a single URL:", placeholder="http://example.com/page?id=1 OR 1=1")
+    url_input = st.text_input("🔗 Enter a single URL:", placeholder="http://example.com?id=1 OR 1=1")
 
     if st.button("Analyze URL"):
         features = extract_features(url_input).reshape(1, -1)
         pred = threat_model.predict(features)[0]
-        label = "⚠️ Malicious" if pred == 1 else "✅ Benign"
-        st.markdown(f"**Prediction:** {label}")
+        label = threat_label_encoder.inverse_transform([pred])[0]
+        
+        if label == "benign":
+            st.success(f"✅ Benign URL")
+        else:
+            st.error(f"⚠️ Malicious — {label.upper()}")
 
     st.divider()
+    st.subheader("📁 Upload CSV with 'url' and 'label'")
 
-    st.subheader("📁 Upload a CSV of URLs")
-    file = st.file_uploader("Upload CSV with a 'url' column", type=['csv'])
-
+    file = st.file_uploader("Upload a CSV file", type=["csv"])
     if file:
         df = pd.read_csv(file)
         if 'url' in df.columns:
-            df['prediction'] = df['url'].apply(lambda u: "Malicious" if threat_model.predict([extract_features(u)])[0] == 1 else "Benign")
-            st.dataframe(df[['url', 'prediction']])
+            df['predicted'] = df['url'].apply(lambda u: threat_label_encoder.inverse_transform(
+                threat_model.predict([extract_features(u)])[0:1])[0])
+            st.dataframe(df[['url', 'predicted']])
             csv_out = df.to_csv(index=False).encode('utf-8')
             st.download_button("⬇️ Download Results", csv_out, "threat_predictions.csv", "text/csv")
         else:
-            st.error("CSV must contain a column named 'url'.")
+            st.warning("CSV must contain a 'url' column.")
 
 # ==================== TRAFFIC CLASSIFICATION TAB ==================== #
 with tabs[1]:
