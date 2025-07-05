@@ -2,82 +2,160 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import joblib
-from utils.feature_extraction import extract_features
+from scripts.feature_extraction import extract_features
+from sklearn.metrics import classification_report, confusion_matrix
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 # Load models
-threat_model = joblib.load("model/rf_model.pkl")
-traffic_model = joblib.load("../model/traffic_classifier.pkl")
-traffic_scaler = joblib.load("../model/traffic_scaler.pkl")
-traffic_label_encoder = joblib.load("../model/traffic_label_encoder.pkl")
-threat_label_encoder = joblib.load("../model/rf_label_encoder.pkl")
+threat_model = joblib.load("model/threat_model.pkl")
+threat_label_encoder = joblib.load("model/threat_label_encoder.pkl")
+traffic_model = joblib.load("model/traffic_classifier.pkl")
+traffic_label_encoder = joblib.load("model/traffic_label_encoder.pkl")
+traffic_scaler = joblib.load("model/traffic_scaler.pkl")
 
-# App layout
-st.set_page_config(page_title="AI Network Security", layout="wide")
-st.title("🛡️ AI-Powered Network Security Tool")
+# Page config
+st.set_page_config(page_title="AI Network Security", layout="wide", page_icon="🛡️")
 
-tabs = st.tabs(["🚨 Threat Detection", "🚦 Traffic Classification"])
+# -------------------------------
+# Sidebar 
+# -------------------------------
+with st.sidebar:
+    st.markdown(
+        """
+        <div style="text-align: center;">
+            <img src="https://img.icons8.com/fluency/96/shield.png" width="100">
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+    st.markdown("## 🛡️ AI Network Security")
+    st.markdown(
+        """
+        **Overview**
+        
+        This tool uses AI/ML models to:
+        - Detect threats like XSS and SQL Injection in URLs
+        - Classify network traffic flows by application type
+        - Perform real-time & batch analysis of URLs and traffic data
+        - Show confidence levels for predictions
+        """,
+        unsafe_allow_html=True
+    )
+    st.markdown(
+        """
+        **Built by:**  
+        Snith Shibu  
+        Sidharth Sumitra Gireesh  
+        Devananda S. R.
+        """,
+        unsafe_allow_html=True
+    )
+    st.markdown("📚 Intel® Unnati Training Program 2025")
+    st.markdown("---")
+    st.markdown("🔗 [GitHub Repo](https://github.com/snithshibu/AI-Network-Security)")
 
-# ==================== THREAT DETECTION TAB ==================== #
+# -------------------------------
+# Main Tabs
+# -------------------------------
+st.title("🧠 AI-Powered Network Security Dashboard")
+tabs = st.tabs(["🔍 Threat Detection (XSS / SQLi)", "🚦 Traffic Flow Classification"])
+
+# -------------------------------
+# 🔍 Tab 1: Threat Detection
+# -------------------------------
 with tabs[0]:
-    st.header("Detect SQL Injection / XSS Attacks")
+    st.header("🔗 URL Analysis for Threats")
 
-    url_input = st.text_input("🔗 Enter a single URL:", placeholder="http://example.com?id=1 OR 1=1")
+    url_input = st.text_input("Enter a URL:", placeholder="http://example.com?id=1 OR 1=1")
 
     if st.button("Analyze URL"):
-        features = extract_features(url_input).reshape(1, -1)
-        pred = threat_model.predict(features)[0]
-        label = threat_label_encoder.inverse_transform([pred])[0]
-        
-        if label == "benign":
-            st.success(f"✅ Benign URL")
+        if url_input.strip() == "":
+            st.warning("Please enter a valid URL.")
         else:
-            st.error(f"⚠️ Malicious — {label.upper()}")
+            try:
+                features = extract_features(url_input).reshape(1, -1)
+                probs = threat_model.predict_proba(features)[0]
+                pred_idx = probs.argmax()
+                label = str(threat_label_encoder.inverse_transform([pred_idx])[0])
+                confidence = round(probs[pred_idx] * 100, 2)
+
+                # Confidence coloring
+                if confidence >= 90:
+                    badge_color = "🟢 High"
+                elif confidence >= 70:
+                    badge_color = "🟡 Moderate"
+                else:
+                    badge_color = "🔴 Low"
+                    st.warning("⚠️ Confidence is low — the model may be unsure. Consider double-checking manually.")
+
+                st.markdown(f"**🧠 Confidence:** {confidence}% ({badge_color})")
+
+                if label.lower() == "benign":
+                    st.success(f"✅ Benign URL")
+                else:
+                    st.error(f"⚠️ Malicious — {label.upper()}")
+            except Exception as e:
+                st.exception(e)
 
     st.divider()
-    st.subheader("📁 Upload CSV with 'url' and 'label'")
 
-    file = st.file_uploader("Upload a CSV file", type=["csv"])
+    st.subheader("📁 Batch URL Prediction via CSV")
+    st.markdown("Upload a CSV with a `url` column.")
+
+    file = st.file_uploader("Choose a CSV", type=["csv"])
     if file:
-        df = pd.read_csv(file)
-        if 'url' in df.columns:
-            df['predicted'] = df['url'].apply(lambda u: threat_label_encoder.inverse_transform(
-                threat_model.predict([extract_features(u)])[0:1])[0])
-            st.dataframe(df[['url', 'predicted']])
-            csv_out = df.to_csv(index=False).encode('utf-8')
-            st.download_button("⬇️ Download Results", csv_out, "threat_predictions.csv", "text/csv")
-        else:
-            st.warning("CSV must contain a 'url' column.")
+        try:
+            df = pd.read_csv(file)
+            if 'url' not in df.columns:
+                st.error("❌ Your CSV must contain a 'url' column.")
+            else:
+                df['predicted'] = df['url'].apply(
+                    lambda u: str(threat_label_encoder.inverse_transform(
+                        threat_model.predict([extract_features(u)])[0:1])[0])
+                )
 
-# ==================== TRAFFIC CLASSIFICATION TAB ==================== #
+                df['confidence'] = df['url'].apply(
+                    lambda u: round(max(threat_model.predict_proba([extract_features(u)])[0]) * 100, 2)
+                )
+
+                st.markdown("### 🧾 Results")
+                st.dataframe(df[['url', 'predicted', 'confidence']])
+
+                avg_conf = df['confidence'].mean()
+                st.info(f"📈 Average model confidence: **{round(avg_conf, 2)}%**")
+
+                csv_out = df.to_csv(index=False).encode('utf-8')
+                st.download_button("⬇️ Download Results", csv_out, "threat_predictions.csv", "text/csv")
+        except Exception as e:
+            st.exception(e)
+
+# -------------------------------
+# 🚦 Tab 2: Traffic Classification
+# -------------------------------
 with tabs[1]:
-    st.header("Classify Network Traffic Flows")
+    st.header("📶 Application Traffic Flow Classifier")
 
-    st.subheader("📁 Upload flow-level CSV")
-    file2 = st.file_uploader("Upload network flow data", type=['csv'], key="traffic")
+    st.markdown("Upload a CSV containing **87 network flow metadata features**.")
 
-    if file2:
-        df2 = pd.read_csv(file2)
+    traffic_file = st.file_uploader("Upload traffic metadata CSV", type=["csv"], key="traffic")
+    if traffic_file:
+        try:
+            traffic_df = pd.read_csv(traffic_file)
 
-        # Clean and prepare
-        ignore_cols = ['Flow.ID', 'Source.IP', 'Destination.IP', 'Timestamp',
-                       'Label', 'L7Protocol', 'ProtocolName']
-
-        X = df2.drop(columns=[col for col in ignore_cols if col in df2.columns], errors='ignore')
-        X = X.select_dtypes(include=[np.number])
-        X = X.replace([np.inf, -np.inf], np.nan).dropna()
-
-        # Ensure enough rows exist after cleaning
-        if X.empty:
-            st.error("All rows were dropped after cleaning. Check your CSV.")
-        else:
-            X_scaled = traffic_scaler.transform(X)
+            # Extract numeric-only features for prediction
+            traffic_features = traffic_df.select_dtypes(include=np.number)
+            X_scaled = traffic_scaler.transform(traffic_features)
             preds = traffic_model.predict(X_scaled)
-            class_names = traffic_label_encoder.inverse_transform(preds)
+            labels = traffic_label_encoder.inverse_transform(preds)
 
-            df2 = df2.loc[X.index]  # align indexes
-            df2['Predicted_Class'] = class_names
-            st.dataframe(df2[['Predicted_Class'] + [col for col in df2.columns if col not in ignore_cols][:5]])
+            traffic_df['Predicted_App'] = labels
 
-            csv_out = df2.to_csv(index=False).encode('utf-8')
-            st.download_button("⬇️ Download Classification Results", csv_out, "traffic_predictions.csv", "text/csv")
+            st.markdown("### 🔍 Classification Output")
+            st.dataframe(traffic_df[['Predicted_App']].join(traffic_df.drop('Predicted_App', axis=1, errors='ignore')))
 
+            csv_out = traffic_df.to_csv(index=False).encode('utf-8')
+            st.download_button("⬇️ Download Classified Traffic", csv_out, "classified_traffic.csv", "text/csv")
+
+        except Exception as e:
+            st.exception(e)
