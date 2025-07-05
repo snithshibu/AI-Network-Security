@@ -131,6 +131,8 @@ streamlit run app.py
 | `http://example.com?id=1 OR 1=1`             | ⚠️ Malicious — SQL\_INJECTION |
 | `https://shop.com/product?item=123`          | ✅ Benign                      |
 
+<br>
+
 | Traffic Flow Metadata           | Prediction |
 | ------------------------------- | ---------- |
 | Flow with SSL protocol features | ✅ SSL      |
