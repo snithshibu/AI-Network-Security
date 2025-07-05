@@ -1,15 +1,23 @@
 # 🛡️ AI-Powered Network Security System
 
-This project is submitted as part of the **Intel® Unnati Internship Program 2025** under the theme  
-**AI/ML for Networking – Network Security**.
+This project is submitted as part of the **Intel® Unnati Internship Trainin Program 2025** for the problem statement - **AI/ML for Networking – Network Security**.
 
-It integrates two machine learning components into a modern web application to enhance automated network defense:
+It leverages **Machine Learning** to provide real-time **Threat Detection (XSS, SQL Injection, Benign)** and **Traffic Classification (App Protocols)** based on flow metadata.
 
 1. 🚨 **Threat Detection**  
-   Detects and classifies potentially malicious URLs into types: `SQL Injection`, `XSS`, or `Benign`.
+- Predicts if a given URL is:
+  - ⚠️ XSS (Cross-site scripting)
+  - 🧨 SQL Injection
+  - ✅ Benign
+- Displays a **confidence score** for predictions.
+- Supports **single URL** or **CSV upload**.
+- Built on hand-crafted feature extraction and a Random Forest classifier.
 
 2. 🚦 **Traffic Classification**  
-   Classifies network traffic flows into application types like HTTP, SSL, GOOGLE, etc., using flow-level metadata.
+- Classifies network flow metadata (87 features) into:
+  - `HTTP`, `SSL`, `GOOGLE`, `HTTP_CONNECT`, `HTTP_PROXY`
+- Uses scikit-learn pipelines with `LabelEncoder`, `StandardScaler`, and `RandomForestClassifier`.
+- Scalable to support more protocols.
 
 Both systems are unified within a clean, interactive **Streamlit dashboard** that supports real-time and batch analysis.
 
@@ -25,6 +33,16 @@ Both systems are unified within a clean, interactive **Streamlit dashboard** tha
 | ✅ Privacy-Preserving Analysis | No decryption or DPI; metadata-based | ✔️ Fully compliant |
 | ✅ Downloadable Results | Predictions can be exported to CSV | ✔️ Enabled |
 | ✅ Modular & Scalable Design | Models are decoupled and retrainable | ✔️ Structured for future extensions |
+
+---
+
+## 🖥️ Personalized UI
+
+- Clean **Streamlit interface**
+- Intuitive **Sidebar** for switching between modules
+- Confidence-based output labels (🟢 High, 🟡 Moderate, 🔴 Low)
+- Toggle section for **advanced evaluation** if needed
+- ⚡ Light-weight and fast execution
 
 ---
 
@@ -48,35 +66,43 @@ Both systems are unified within a clean, interactive **Streamlit dashboard** tha
 ## 🛠️ Tech Stack
 
 - **Python 3.12**
-- **Streamlit** – Web dashboard
+- **Streamlit** – Web dashboard UI
 - **scikit-learn** – Machine learning models
 - **pandas**, **numpy** – Data handling
 - **joblib** – Model serialization
 - **StandardScaler**, **LabelEncoder** – Preprocessing tools
+- **seaborn**, **matplotlib** - Plots in notebooks
 
 ---
 
 ## 📁 Folder Structure
 
-AI-Network-security/ <br>
-│ <br>
-├── app.py # Streamlit UI <br>
-├── requirements.txt # Dependencies <br>
-├── sample_http.csv # URL dataset for threat detection <br>
-├── data.csv # Flow-based dataset for classification <br>
+AI-Network-Security/<br>
 │<br>
-├── model/<br>
-│ ├── rf_model.pkl<br>
-│ ├── traffic_classifier.pkl<br>
-│ ├── traffic_scaler.pkl<br>
-│ └── traffic_label_encoder.pkl<br>
+├── app.py                          # Streamlit frontend <br>
+├── README.md                       # Project overview<br>
+├── requirements.txt                # Dependencies<br>
 │<br>
-├── utils/<br>
-│ └── feature_extraction.py # Custom URL feature logic<br>
+├── model/                          # Trained ML models<br>
+│   ├── threat_model.pkl<br>
+│   ├── threat_label_encoder.pkl<br>
+│   ├── traffic_classifier.pkl<br>
+│   ├── traffic_label_encoder.pkl<br>
+│   └── traffic_scaler.pkl<br>
 │<br>
-├── notebooks/ # Jupyter notebooks for training<br>
-│ ├── traffic_classification.ipynb<br>
-│ └── explore_traffic_data.ipynb<br>
+├── data/<br>
+│   ├── threat_data.csv             # Final balanced URL dataset<br>
+│   └── traffic_data.csv            # 87-feature flow dataset<br>
+│<br>
+├── scripts/<br>
+│   ├── train_threat_model.py       # Train threat detection model<br>
+│   ├── train_traffic_model.py      # Train traffic classifier<br>
+│   ├── evaluate_test_data.py       # Evaluate on test set (optional)<br>
+│   └── feature_extraction.py       # Custom feature extractor<br>
+│<br>
+├── notebooks/<br>
+│   ├── evaluate_train_data.ipynb   # Visual analysis of threat model<br>
+│   └── traffic_model_training.ipynb # Traffic model training + CM<br>
 
 ---
 
@@ -113,8 +139,15 @@ streamlit run app.py
 
 ---
 
-👨‍💻 Developed By <br>
-Snith Shibu <br>
-Sidharth Sumitra Gireesh <br>
-Devananda S.R. <br>
-Intel® Unnati Internship 2025 <br>
+## 👨‍💻 Developed By <br>
+### Snith Shibu <br>
+### Sidharth Sumitra Gireesh <br>
+### Devananda S.R. <br>
+ECE students from Mar Baselios College of Engineering and Technology, Trivandrum, Kerala
+
+---
+
+## 📌 Notes
+- All models can be retrained via the scripts/ folder.
+- traffic_data.csv (the traning data for traffic classification was huge), so wasn't able to commit to the repository
+- evaluate_test_data.py can be used later to evaluate new URLs. Save it under the name "sample_test_http.csv"
