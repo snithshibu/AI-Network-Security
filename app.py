@@ -51,7 +51,7 @@ with st.sidebar:
         """,
         unsafe_allow_html=True
     )
-    st.markdown("📚 Intel® Unnati Training Program 2025")
+    st.markdown("📚 Done As Part Of Intel® Unnati Training Program 2025")
     st.markdown("---")
     st.markdown("🔗 [GitHub Repo](https://github.com/snithshibu/AI-Network-Security)")
 
