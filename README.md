@@ -4,6 +4,8 @@ This project is submitted as part of the **Intel® Unnati Internship Trainin Pro
 
 It leverages **Machine Learning** to provide real-time **Threat Detection (XSS, SQL Injection, Benign)** and **Traffic Classification (App Protocols)** based on flow metadata.
 
+A **Streamlit-based web app** allows users to upload traffic CSVs or test URLs directly in an interactive interface.
+
 1. 🚨 **Threat Detection**  
 - Predicts if a given URL is:
   - ⚠️ XSS (Cross-site scripting)
@@ -38,11 +40,11 @@ Both systems are unified within a clean, interactive **Streamlit dashboard** tha
 
 ## 🖥️ Personalized UI
 
-- Clean **Streamlit interface**
+- Clean **Streamlit Web interface**
 - Intuitive **Sidebar** for switching between modules
 - Confidence-based output labels (🟢 High, 🟡 Moderate, 🔴 Low)
 - Toggle section for **advanced evaluation** if needed
-- ⚡ Light-weight and fast execution
+- Light-weight and fast execution
 
 ---
 
@@ -66,7 +68,7 @@ Both systems are unified within a clean, interactive **Streamlit dashboard** tha
 ## 🛠️ Tech Stack
 
 - **Python 3.12**
-- **Streamlit** – Web dashboard UI
+- **Streamlit** – Web Interface
 - **scikit-learn** – Machine learning models
 - **pandas**, **numpy** – Data handling
 - **joblib** – Model serialization
@@ -79,7 +81,7 @@ Both systems are unified within a clean, interactive **Streamlit dashboard** tha
 
 AI-Network-Security/<br>
 │<br>
-├── app.py                          # Streamlit frontend <br>
+├── app.py                          # Streamlit web interface <br>
 ├── README.md                       # Project overview<br>
 ├── requirements.txt                # Dependencies<br>
 │<br>
@@ -121,6 +123,9 @@ pip install -r requirements.txt
 ### Step 3: Launch the app
 streamlit run app.py
 
+#### Or access the live app here: 
+[Click here to open the Streamlit Web App](https://ai-network-security-app.streamlit.app/)
+
 ---
 
 ## 📈 Sample Outputs
@@ -138,6 +143,12 @@ streamlit run app.py
 | Flow with SSL protocol features | ✅ SSL      |
 | Flow with GOOGLE app pattern    | ✅ GOOGLE   |
 
+---
+
+## 📌 Future Scope
+- Add real-time traffic capture and monitoring using tools like tshark
+- Integrate with backend servers for API-based URL scanning
+- Expand to detect phishing, DoS, and malware domains
 
 ---
 
