@@ -1,5 +1,7 @@
 # 🛡️ AI-Powered Network Security System
 
+[Project Report](https://docs.google.com/document/d/1FoFNDflk7MVWNv2LR0EY4u9xUubrjwg_ScN0wRoIwfM/edit?usp=sharing)
+
 This project is submitted as part of the **Intel® Unnati Internship Trainin Program 2025** for the problem statement - **AI/ML for Networking – Network Security**.
 
 It leverages **Machine Learning** to provide real-time **Threat Detection (XSS, SQL Injection, Benign)** and **Traffic Classification (App Protocols)** based on flow metadata.
